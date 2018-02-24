@@ -1,0 +1,33 @@
+﻿<Window x:Class="_20180223_誤差拡散8色.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:_20180223_誤差拡散8色"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="525">
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition/>
+      <ColumnDefinition Width="150"/>
+    </Grid.ColumnDefinitions>
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+      <Image Name="MyImage" UseLayoutRounding="True" Stretch="None"/>
+    </ScrollViewer>
+    <StackPanel Grid.Column="1">
+      <Button Name="Button0" Content="元の画像"/>
+      <Button Name="Button1" Content="右隣だけに拡散"/>
+      <Button Name="Button2" Content=""/>
+      <Button Name="Button3" Content="FloydSteingerg"/>
+      <Button Name="Button9" Content="蛇行FloydSteinberg"/>
+      <Button Name="Button8" Content="SierraLite"/>
+      <Button Name="Button10" Content="JaJuNi"/>
+      <Button Name="Button11" Content="Atkinson"/>
+      <Button Name="Button4" Content="PixelFormat.BlackWhite"/>
+      <Button Name="Button5" Content="PixelFormat.Indexed2(4色)"/>
+      <Button Name="Button6" Content="PixelFormat.Indexed4(16色)"/>
+      <Button Name="Button7" Content="RedSV"/>
+      <Button Name="Button12" Content="ColorScale"/>
+    </StackPanel>
+  </Grid>
+</Window>
