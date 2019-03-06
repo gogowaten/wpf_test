@@ -9,6 +9,7 @@
     <Grid>
     <StackPanel>
       <Button Content="button1"/>
+      <Button Content="button2"/>
       
     </StackPanel>
     </Grid>
