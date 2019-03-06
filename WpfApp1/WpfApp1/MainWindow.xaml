@@ -10,6 +10,7 @@
     <StackPanel>
       <Button Content="button1"/>
       <Button Content="button2"/>
+      <Button Content="bra1bra1"/>
       
     </StackPanel>
     </Grid>
