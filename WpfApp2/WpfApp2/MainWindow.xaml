@@ -8,7 +8,6 @@
         Title="MainWindow" Height="150" Width="400">
     <Grid>
     <StackPanel>
-      <!--<Button Content="master"/>-->
       <CheckBox Content="bra2"/>
       <TextBlock Text="bra2"/>
       
