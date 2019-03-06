@@ -10,6 +10,7 @@
     <StackPanel>
       <Button Content="master"/>
       <CheckBox Content="bra2"/>
+      <TextBlock Text="bra2"/>
       
     </StackPanel>
     </Grid>
