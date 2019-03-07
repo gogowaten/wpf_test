@@ -31,8 +31,8 @@ namespace _20190307_レイアウト
             MyInitialize();
 
             Loaded += MainWindow_Loaded;
-            ButtonViewChange1.Click += ButtonViewChange1_Click;
-            ButtonViewChange2.Click += ButtonViewChange2_Click;
+            ButtonViewChange1.Click += ButtonViewChangeStackView_Click;
+            ButtonViewChange2.Click += ButtonViewChangeParallelView_Click;
             ButtonZOrder.Click += ButtonZOrder_Click;
 
 
@@ -243,18 +243,31 @@ namespace _20190307_レイアウト
             //Panel.SetZIndex(MyScroll1, 1);
         }
 
-        private void ButtonViewChange2_Click(object sender, RoutedEventArgs e)
+        private void ButtonViewChangeParallelView_Click(object sender, RoutedEventArgs e)
         {
-            Grid.SetColumn(MyScroll2, 1);
+            //Grid.SetColumn(MyScroll2, 2);
             Grid.SetColumnSpan(MyScroll2, 1);
             Grid.SetColumnSpan(MyScroll1, 1);
+
+            MyScroll1.HorizontalAlignment = HorizontalAlignment.Center;
+            MyScroll2.HorizontalAlignment = HorizontalAlignment.Center;
         }
 
-        private void ButtonViewChange1_Click(object sender, RoutedEventArgs e)
+        private void ButtonViewChangeStackView_Click(object sender, RoutedEventArgs e)
         {
-            Grid.SetColumn(MyScroll2, 0);
-            Grid.SetColumnSpan(MyScroll1,2);
-            Grid.SetColumnSpan(MyScroll2, 2);
+            //Grid.SetColumn(MyScroll2, 0);
+            Grid.SetColumnSpan(MyScroll1, 3);
+            Grid.SetColumnSpan(MyScroll2, 3);
+
+            //MyScroll1.HorizontalAlignment = HorizontalAlignment.Left;
+            //MyScroll2.HorizontalAlignment = HorizontalAlignment.Right;
+
+            MyGrid.Width = MyCanvas1.Width;
+            MyScroll2.ScrollToHorizontalOffset(MyCanvas2.Width);
+            //MyScroll2.ScrollToHorizontalOffset(xd);
+            //MyScroll2.ScrollToVerticalOffset(yd);
+
+
         }
     }
 }

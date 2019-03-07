@@ -9,6 +9,7 @@
   <Grid Name="MyGrid" Margin="0 10 0 0" UseLayoutRounding="True">
     <Grid.ColumnDefinitions>
       <ColumnDefinition/>
+      <ColumnDefinition Width="auto"/>
       <ColumnDefinition/>
     </Grid.ColumnDefinitions>
     <Grid.RowDefinitions>
@@ -16,32 +17,35 @@
       <RowDefinition/>
     </Grid.RowDefinitions>
 
-    <StackPanel Grid.ColumnSpan="2" Grid.Row="0" Grid.Column="0" Grid.RowSpan="1"
+    <StackPanel Grid.ColumnSpan="3" Grid.Row="0" Grid.Column="0" Grid.RowSpan="1"
                 Orientation="Horizontal">
       <TextBlock Text="{Binding ElementName=SliderScale, Path=Value, StringFormat=表示倍率 : 0}" Margin="10 0"/>
       <Slider Name="SliderScale" Value="1.0" Minimum="1.0" Maximum="5.0" SmallChange="1.0" LargeChange="1.0"
               IsMoveToPointEnabled="False" IsSnapToTickEnabled="True"
               Width="100"/>
-      <TextBlock Text="{Binding ElementName=MyCanvas1, Path=Width, StringFormat=横 : 0}" Margin="10 0"/>
-      <TextBlock Text="{Binding ElementName=MyCanvas1, Path=Height, StringFormat=縦 : 0}" Margin="10 0"/>
+      <TextBlock Text="{Binding ElementName=MyCanvas2, Path=Width, StringFormat=横 : 0}" Margin="10 0"/>
+      <TextBlock Text="{Binding ElementName=MyCanvas2, Path=Height, StringFormat=縦 : 0}" Margin="10 0"/>
 
-      <TextBlock Text="{Binding ElementName=MyScroll1,Path=VerticalOffset,StringFormat= vOffset \= 0}" Margin="10,0"/>
-      <TextBlock Text="{Binding ElementName=MyScroll1,Path=ScrollableHeight,StringFormat= height \= 0}" Margin="10,0"/>
-      <TextBlock Name="MyText" Text="mytext"/>
-      <Button Name="ButtonViewChange1" Content="view1"/>
-      <Button Name="ButtonViewChange2" Content="view2"/>
+      <TextBlock Text="{Binding ElementName=MyScroll2,Path=HorizontalOffset,StringFormat= hOffset \= 0}" Margin="10,0"/>
+      <TextBlock Text="{Binding ElementName=MyScroll2,Path=ScrollableWidth,StringFormat= hori \= 0}" Margin="10,0"/>
+      
+      <Button Name="ButtonViewChange1" Content="重ねる"/>
+      <Button Name="ButtonViewChange2" Content="並べる"/>
       <Button Name="ButtonZOrder" Content="z order"/>
     </StackPanel>
 
-    <ScrollViewer Name="MyScroll1" Grid.Column="0" Grid.Row="1" 
-                  VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+    
+    <ScrollViewer Name="MyScroll1" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center"
+                  VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden">
       <Canvas Name="MyCanvas1">
         <Image Name="MyImage1" Stretch="None"/>
       </Canvas>
     </ScrollViewer>
-
-    <ScrollViewer Name="MyScroll2" Grid.Column="1" Grid.Row="1" 
-                  VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+    
+    <GridSplitter Grid.Column="1" Grid.Row="1" Width="10" HorizontalAlignment="Stretch"/>
+    
+    <ScrollViewer Name="MyScroll2" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Left" HorizontalContentAlignment="Right"
+                  VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Auto">
       <Canvas Name="MyCanvas2">
         <Image Name="MyImage2" Stretch="None"/>
       </Canvas>
