@@ -25,7 +25,7 @@
       <Thumb Name="ThumbViewport" Canvas.Left="0" Canvas.Top="0"><!--leftとtopの指定が必要-->
         <Thumb.Template>
           <ControlTemplate TargetType="Thumb">
-            <Border BorderBrush="Red" BorderThickness="1" Background="Transparent"/>
+            <Border BorderBrush="Lime" BorderThickness="1" Background="Transparent"/>
           </ControlTemplate>
         </Thumb.Template>
       </Thumb>
