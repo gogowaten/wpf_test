@@ -98,7 +98,7 @@ namespace _20190307_レイアウト2
             //ThumbViewport.Height = height;
 
             //            
-            //MyCombinedGeometry.Geometry2 = new RectangleGeometry(new Rect(left, top, width, height));
+            MyCombinedGeometry.Geometry2 = new RectangleGeometry(new Rect(left, top, width, height));
 
         }
         private void MyBinding()
@@ -145,12 +145,12 @@ namespace _20190307_レイアウト2
             var height = MyScrollViewer.ViewportHeight * y;
             if (height > SmallImage.ActualHeight) height = SmallImage.ActualHeight;
 
-            b = new Binding();
-            b.Source = MyScrollViewer;
-            b.Path = new PropertyPath(ScrollViewer.ViewportWidthProperty);
-            b.Converter = new MyWidthConverter();
-            b.ConverterParameter = new Rect(left, top, width, height);
-            BindingOperations.SetBinding(ThumbViewport, CombinedGeometry.Geometry2Property, b);
+            //b = new Binding();
+            //b.Source = MyScrollViewer;
+            //b.Path = new PropertyPath(ScrollViewer.ViewportWidthProperty);
+            //b.Converter = new MyWidthConverter();
+            //b.ConverterParameter = new Rect(left, top, width, height);
+            //BindingOperations.SetBinding(ThumbViewport, CombinedGeometry.Geometry2Property, b);
 
         }
 
