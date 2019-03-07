@@ -38,11 +38,14 @@ namespace _20190307_レイアウト2
             {
                 MyCombinedGeometry.Geometry1 = new RectangleGeometry(
                 new Rect(0, 0, SmallImage.ActualWidth, SmallImage.ActualHeight));
+                
             };
 
             ThumbViewport.DragDelta += ThumbViewport_DragDelta;
+            
         }
 
+        
         private void ThumbViewport_DragDelta(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
         {
             var smallImgWidth = SmallImage.ActualWidth;
@@ -63,8 +66,6 @@ namespace _20190307_レイアウト2
                 Canvas.SetLeft(ThumbViewport, setLeft);
                 Canvas.SetTop(ThumbViewport, setTop);
             }
-                
-            
         }
 
         private void MyScrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e)
