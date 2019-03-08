@@ -31,8 +31,8 @@ namespace _20190307_レイアウト
             MyInitialize();
 
             Loaded += MainWindow_Loaded;
-            ButtonViewChange1.Click += ButtonViewChange1_Click;
-            ButtonViewChange2.Click += ButtonViewChange2_Click;
+            ButtonViewStack.Click += ButtonViewStack_Click;
+            ButtonViewParallel.Click += ButtonViewParallel_Click;
             ButtonZOrder.Click += ButtonZOrder_Click;
 
 
@@ -93,22 +93,36 @@ namespace _20190307_レイアウト
             }
         }
 
+
         private void MyImage2_MouseMove(object sender, MouseEventArgs e)
         {
             if (e.RightButton == MouseButtonState.Pressed)
             {
                 MyImage2.Cursor = Cursors.ScrollAll;
-                var mouseP = e.GetPosition(this);
-                var xd = MyPoint.X - mouseP.X;
-                var yd = MyPoint.Y - mouseP.Y;
-                xd += MyScroll2.HorizontalOffset;
-                yd += MyScroll2.VerticalOffset;
-                MyScroll2.ScrollToHorizontalOffset(xd);
-                MyScroll2.ScrollToVerticalOffset(yd);
-                MyPoint = mouseP;
+                //今のマウスの座標
+                Point mouseP = e.GetPosition(this);
+                //マウスの移動距離だけスクロールさせる
+                SetScroll(MyScroll2, mouseP);
             }
         }
-
+        //マウスの移動距離だけスクロールさせる
+        private void SetScroll(ScrollViewer scrollViewer, Point mousePoint)
+        {
+            //マウスの移動距離＝直前の座標と今の座標の差
+            double xd = MyPoint.X - mousePoint.X;
+            double yd = MyPoint.Y - mousePoint.Y;
+            //拡大表示のときはそのぶん大きくスクロールさせる
+            xd *= MyScale.ScaleX;
+            yd *= MyScale.ScaleY;
+            //移動距離＋今のスクロール位置
+            xd += scrollViewer.HorizontalOffset;
+            yd += scrollViewer.VerticalOffset;
+            //スクロール位置の指定
+            scrollViewer.ScrollToHorizontalOffset(xd);
+            scrollViewer.ScrollToVerticalOffset(yd);
+            //直前のマウスカーソル座標を今の座標に変更
+            MyPoint = mousePoint;
+        }
         private void MyImage2_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
             MyImage2.ReleaseMouseCapture();
@@ -124,25 +138,13 @@ namespace _20190307_レイアウト
         //右クリックドラッグ移動
         private void MyImage1_MouseMove(object sender, MouseEventArgs e)
         {
-            //マウスの移動距離だけスクロールさせる
             if (e.RightButton == MouseButtonState.Pressed)
             {
                 MyImage1.Cursor = Cursors.ScrollAll;
                 //今のマウスの座標
-                var mouseP = e.GetPosition(this);
-                //マウスの移動距離＝直前の座標と今の座標の差
-                var xd = MyPoint.X - mouseP.X;
-                var yd = MyPoint.Y - mouseP.Y;
-                //xd *= 2;//2倍速
-                //yd *= 2;
-                //移動距離＋今のスクロール位置
-                xd += MyScroll1.HorizontalOffset;
-                yd += MyScroll1.VerticalOffset;
-                //スクロール位置の指定
-                MyScroll1.ScrollToHorizontalOffset(xd);
-                MyScroll1.ScrollToVerticalOffset(yd);
-
-                MyPoint = mouseP;//直前の座標を今の座標に変更
+                Point mouseP = e.GetPosition(this);
+                //マウスの移動距離だけスクロールさせる
+                SetScroll(MyScroll1, mouseP);
             }
         }
 
@@ -159,6 +161,8 @@ namespace _20190307_レイアウト
             //マウスがScrollViewer外になってもドラッグ移動を有効にしたいときだけ必要
             MyImage1.CaptureMouse();
         }
+
+
 
         //アプリ起動完了時に表示された画像サイズを取得してCanvasサイズに指定する
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
@@ -240,18 +244,22 @@ namespace _20190307_レイアウト
             }
         }
 
-        private void ButtonViewChange2_Click(object sender, RoutedEventArgs e)
+        private void ButtonViewParallel_Click(object sender, RoutedEventArgs e)
         {
             Grid.SetColumn(MyScroll2, 1);
             Grid.SetColumnSpan(MyScroll2, 1);
             Grid.SetColumnSpan(MyScroll1, 1);
+            MyCanvas1.HorizontalAlignment = HorizontalAlignment.Right;
+            MyCanvas2.HorizontalAlignment = HorizontalAlignment.Left;
         }
 
-        private void ButtonViewChange1_Click(object sender, RoutedEventArgs e)
+        private void ButtonViewStack_Click(object sender, RoutedEventArgs e)
         {
             Grid.SetColumn(MyScroll2, 0);
             Grid.SetColumnSpan(MyScroll1, 2);
             Grid.SetColumnSpan(MyScroll2, 2);
+            MyCanvas1.HorizontalAlignment = HorizontalAlignment.Center;
+            MyCanvas2.HorizontalAlignment = HorizontalAlignment.Center;
         }
     }
 }
