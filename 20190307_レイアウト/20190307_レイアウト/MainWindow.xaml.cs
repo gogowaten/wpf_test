@@ -238,9 +238,6 @@ namespace _20190307_レイアウト
             {
                 Panel.SetZIndex(MyScroll2, z2 - 1);
             }
-            //Panel.SetZIndex(MyScroll1, Panel.GetZIndex(MyScroll2));
-            //Panel.SetZIndex(MyScroll2, z);
-            //Panel.SetZIndex(MyScroll1, 1);
         }
 
         private void ButtonViewChange2_Click(object sender, RoutedEventArgs e)
