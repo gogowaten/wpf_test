@@ -245,12 +245,12 @@ namespace _20190307_レイアウト
 
         private void ButtonViewChangeParallelView_Click(object sender, RoutedEventArgs e)
         {
-            //Grid.SetColumn(MyScroll2, 2);
-            Grid.SetColumnSpan(MyScroll2, 1);
-            Grid.SetColumnSpan(MyScroll1, 1);
+            ////Grid.SetColumn(MyScroll2, 2);
+            //Grid.SetColumnSpan(MyScroll2, 1);
+            //Grid.SetColumnSpan(MyScroll1, 1);
 
-            MyScroll1.HorizontalAlignment = HorizontalAlignment.Center;
-            MyScroll2.HorizontalAlignment = HorizontalAlignment.Center;
+            //MyScroll1.HorizontalAlignment = HorizontalAlignment.Center;
+            //MyScroll2.HorizontalAlignment = HorizontalAlignment.Center;
         }
 
         private void ButtonViewChangeStackView_Click(object sender, RoutedEventArgs e)
