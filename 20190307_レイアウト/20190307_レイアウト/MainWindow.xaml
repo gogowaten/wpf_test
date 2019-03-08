@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:_20190307_レイアウト"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="800">
+        Title="MainWindow" Height="450" Width="800">
   <Grid Name="MyGrid" Margin="0 10 0 0" UseLayoutRounding="True">
     <Grid.ColumnDefinitions>
       <ColumnDefinition/>
@@ -13,6 +13,7 @@
     </Grid.ColumnDefinitions>
     <Grid.RowDefinitions>
       <RowDefinition Height="20"/>
+      <RowDefinition Height="200"/>
       <RowDefinition/>
       <RowDefinition Height="24"/>
     </Grid.RowDefinitions>
@@ -23,22 +24,43 @@
       <Slider Name="SliderScale" Value="1.0" Minimum="1.0" Maximum="5.0" SmallChange="1.0" LargeChange="1.0"
               IsMoveToPointEnabled="False" IsSnapToTickEnabled="True"
               Width="50"/>
-      <TextBlock Text="{Binding ElementName=MyScroll1,Path=VerticalOffset,StringFormat= vOffset \= 0}" Margin="10,0"/>
-      <TextBlock Text="{Binding ElementName=MyScroll1,Path=ScrollableHeight,StringFormat= height \= 0}" Margin="10,0"/>
-      
+      <TextBlock Text="{Binding ElementName=MyScroll1, Path=VerticalOffset, StringFormat= vOffset \= 0}" Margin="10, 0"/>
+      <TextBlock Text="{Binding ElementName=MyScroll1, Path=ScrollableHeight, StringFormat= height \= 0}" Margin="10, 0"/>
+
       <Button Name="ButtonViewStack" Content="重ね"/>
       <Button Name="ButtonViewParallel" Content="並び"/>
       <Button Name="ButtonZOrder" Content="z order"/>
     </StackPanel>
 
-    <ScrollViewer Name="MyScroll1" Grid.Column="0" Grid.Row="1" 
+    <DockPanel Grid.Row="1" Grid.ColumnSpan="2">
+      <Canvas DockPanel.Dock="Left"
+              Width="{Binding ElementName=MyImageThumbnail, Path=ActualWidth}"
+              Height="{Binding ElementName=MyImageThumbnail, Path=ActualHeight}">
+        <Image Name="MyImageThumbnail" Width="200" Height="auto" Stretch="Uniform"/>
+        <Path Name="MyPath" Fill="White" Opacity="0.5">
+          <Path.Data>
+            <CombinedGeometry x:Name="MyCombinedGeometry" GeometryCombineMode="Xor"/>
+          </Path.Data>
+        </Path>
+        <Thumb Name="ThumbViewport" Canvas.Left="0" Canvas.Top="0">
+          <Thumb.Template>
+            <ControlTemplate TargetType="Thumb">
+              <Border BorderBrush="Red" BorderThickness="1" Background="Transparent"/>
+            </ControlTemplate>
+          </Thumb.Template>
+        </Thumb>
+      </Canvas>
+      <TextBlock Text="textblock"/>
+    </DockPanel>
+
+    <ScrollViewer Name="MyScroll1" Grid.Column="0" Grid.Row="2" 
                   VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
       <Canvas Name="MyCanvas1" HorizontalAlignment="Right">
         <Image Name="MyImage1" Stretch="None"/>
       </Canvas>
     </ScrollViewer>
 
-    <ScrollViewer Name="MyScroll2" Grid.Column="1" Grid.Row="1" 
+    <ScrollViewer Name="MyScroll2" Grid.Column="1" Grid.Row="2" 
                   VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
       <Canvas Name="MyCanvas2" HorizontalAlignment="Left">
         <Image Name="MyImage2" Stretch="None"/>
@@ -65,7 +87,7 @@
       </StatusBarItem>
       <StatusBarItem Content=""/>
 
-      
+
       <StatusBarItem DockPanel.Dock="Right">
         <Button Content="button"/>
       </StatusBarItem>

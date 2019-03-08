@@ -35,7 +35,24 @@ namespace _20190307_レイアウト
             ButtonViewParallel.Click += ButtonViewParallel_Click;
             ButtonZOrder.Click += ButtonZOrder_Click;
 
+            MyScroll1.SizeChanged += MyScroll1_SizeChanged;
+        }
 
+        private void MyScroll1_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+
+            double x = MyImageThumbnail.ActualWidth / MyScroll1.ExtentWidth;
+            double y = MyImageThumbnail.ActualHeight / MyScroll1.ExtentHeight;
+            double left = MyScroll1.HorizontalOffset * x;
+            double top = MyScroll1.VerticalOffset * y;
+            double width = MyScroll1.ViewportWidth * x;
+            double height = MyScroll1.ViewportHeight * y;
+            if (height > MyImageThumbnail.ActualHeight) { height = MyImageThumbnail.ActualHeight; }
+            Canvas.SetTop(ThumbViewport, top);
+            ThumbViewport.Height = height;
+            if (width > MyImageThumbnail.ActualWidth) { width = MyImageThumbnail.ActualWidth; }
+            Canvas.SetLeft(ThumbViewport, left);
+            ThumbViewport.Width = width;
         }
 
         //初期処理
@@ -48,6 +65,7 @@ namespace _20190307_レイアウト
             //Imageに画像表示
             MyImage1.Source = new BitmapImage(new Uri(filePath1));
             MyImage2.Source = new BitmapImage(new Uri(filePath2));
+            MyImageThumbnail.Source = new BitmapImage(new Uri(filePath1));
 
 
             SliderScale.ValueChanged += SliderScale_ValueChanged;
@@ -63,10 +81,25 @@ namespace _20190307_レイアウト
             MyImage2.MouseLeftButtonDown += MyImage_MouseLeftButtonDown;
             MyImage1.MouseLeftButtonDown += MyImage_MouseLeftButtonDown;
             MyImage1.MouseLeftButtonUp += MyImage_MouseLeftButtonUp;
+
+            ThumbViewport.DragDelta += ThumbViewport_DragDelta;
             //拡大倍率用
             MyScale = new ScaleTransform();
             MyImage1.RenderTransform = MyScale;
             MyImage2.RenderTransform = MyScale;
+        }
+
+
+        //ThumbViewportドラッグ移動
+        private void ThumbViewport_DragDelta(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
+        {
+            double imgWidth = MyImageThumbnail.ActualWidth;
+            double imgHeight = MyImageThumbnail.ActualHeight;
+            MyScroll1.ScrollToHorizontalOffset(
+                MyScroll1.HorizontalOffset + (e.HorizontalChange * MyScroll1.ExtentWidth / imgWidth));
+            MyScroll1.ScrollToVerticalOffset(
+                MyScroll1.VerticalOffset + (e.VerticalChange * MyScroll1.ExtentHeight / imgHeight));
+
         }
 
         private void MyImage_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -182,30 +215,57 @@ namespace _20190307_レイアウト
 
         //		UWPのScrollViewerでスクロール位置の同期を行うメモ
         //http://studio-geek.com/archives/857
+
+        //ThumbViewportの位置とサイズを変更
         private void MyScroll2_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
             //値が双方で異なるときだけ更新
-            if (e.VerticalOffset != MyScroll1.VerticalOffset)
+            if (e.VerticalOffset != MyScroll1.VerticalOffset|e.ExtentHeightChange!=0)
             {
                 MyScroll1.ScrollToVerticalOffset(e.VerticalOffset);
+                SetThumbViewportVertical(e);
             }
-            if (e.HorizontalOffset != MyScroll1.HorizontalOffset)
+            if (e.HorizontalOffset != MyScroll1.HorizontalOffset|e.ExtentWidthChange!=0)
             {
                 MyScroll1.ScrollToHorizontalOffset(e.HorizontalOffset);
+                SetThumbViewportHorizontal(e);
             }
         }
 
         private void MyScroll1_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
-            if (e.VerticalOffset != MyScroll2.VerticalOffset)
+            if (e.VerticalOffset != MyScroll2.VerticalOffset | e.ExtentHeightChange!=0)
             {
                 MyScroll2.ScrollToVerticalOffset(e.VerticalOffset);
+                SetThumbViewportVertical(e);
             }
-            if (e.HorizontalOffset != MyScroll2.HorizontalOffset)
+            if (e.HorizontalOffset != MyScroll2.HorizontalOffset|e.ExtentWidthChange!=0)
             {
                 MyScroll2.ScrollToHorizontalOffset(e.HorizontalOffset);
+                SetThumbViewportHorizontal(e);
             }
         }
+        //ThumbViewportの位置と高さを変更、縦スクロールバー変更時
+        private void SetThumbViewportVertical(ScrollChangedEventArgs e)
+        {
+            double y = MyImageThumbnail.ActualHeight / e.ExtentHeight;
+            double top = e.VerticalOffset * y;
+            double height = e.ViewportHeight * y;
+            if (height > MyImageThumbnail.ActualHeight) { height = MyImageThumbnail.ActualHeight; }
+            Canvas.SetTop(ThumbViewport, top);
+            ThumbViewport.Height = height;
+        }
+        //ThumbViewportの位置と幅を変更、横スクロールバー変更時
+        private void SetThumbViewportHorizontal(ScrollChangedEventArgs e)
+        {
+            double x = MyImageThumbnail.ActualWidth / e.ExtentWidth;
+            double left = e.HorizontalOffset * x;
+            double width = e.ViewportWidth * x;
+            if (width > MyImageThumbnail.ActualWidth) { width = MyImageThumbnail.ActualWidth; }
+            Canvas.SetLeft(ThumbViewport, left);
+            ThumbViewport.Width = width;
+        }
+
 
         //拡大倍率変更時はImageを乗せているCanvasのサイズを変更する
         private void SliderScale_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -226,6 +286,7 @@ namespace _20190307_レイアウト
             MyCanvas2.Height = bounds.Height;
             MyCanvas2.Width = bounds.Width;
 
+           
         }
 
 
