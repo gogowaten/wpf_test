@@ -6,14 +6,17 @@
         xmlns:local="clr-namespace:_20190307_レイアウト"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-  <Grid Name="MyGrid" Margin="0 10 0 0" UseLayoutRounding="True">
+  <Window.Resources>
+    <local:MyConverter x:Key="ColorConverter"/>
+  </Window.Resources>
+  <Grid Name="MyGrid" Margin="0 10 0 0">
     <Grid.ColumnDefinitions>
       <ColumnDefinition/>
       <ColumnDefinition/>
     </Grid.ColumnDefinitions>
     <Grid.RowDefinitions>
       <RowDefinition Height="20"/>
-      <RowDefinition Height="200"/>
+      <RowDefinition Height="200" Name="MyRowDifinitionThumbImage"/>
       <RowDefinition/>
       <RowDefinition Height="24"/>
     </Grid.RowDefinitions>
@@ -29,13 +32,14 @@
 
       <Button Name="ButtonViewStack" Content="重ね"/>
       <Button Name="ButtonViewParallel" Content="並び"/>
+      <CheckBox Name="MyCheckBoxVisibleThumbImage" Content="サムネ表示" IsChecked="True" VerticalAlignment="Center"/>
       <Button Name="ButtonZOrder" Content="z order"/>
     </StackPanel>
 
-    <DockPanel Grid.Row="1" Grid.ColumnSpan="2">
-      <Canvas DockPanel.Dock="Left"
-              Width="{Binding ElementName=MyImageThumbnail, Path=ActualWidth}"
-              Height="{Binding ElementName=MyImageThumbnail, Path=ActualHeight}">
+    <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.ColumnSpan="2" UseLayoutRounding="True">
+      <Canvas Width="{Binding ElementName=MyImageThumbnail, Path=ActualWidth}"
+              Height="{Binding ElementName=MyImageThumbnail, Path=ActualHeight}"
+               UseLayoutRounding="True">
         <Image Name="MyImageThumbnail" Width="200" Height="auto" Stretch="Uniform"/>
         <Path Name="MyPath" Fill="White" Opacity="0.5">
           <Path.Data>
@@ -45,24 +49,58 @@
         <Thumb Name="ThumbViewport" Canvas.Left="0" Canvas.Top="0">
           <Thumb.Template>
             <ControlTemplate TargetType="Thumb">
-              <Border BorderBrush="Red" BorderThickness="1" Background="Transparent"/>
+              <Border BorderBrush="Lime" BorderThickness="1" Background="Transparent"/>
             </ControlTemplate>
           </Thumb.Template>
         </Thumb>
       </Canvas>
       <TextBlock Text="textblock"/>
-    </DockPanel>
+      <ScrollViewer Background="MistyRose" Width="500" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Hidden">
+      <StackPanel>
+        <StackPanel Name="StackPanel1" Orientation="Horizontal">
+          <TextBlock Text="palette1"/>
+          <Button Content="reduce"/>
+          <ListBox Name="MyListBoxPalette1" ItemsSource="{Binding}">
+            <ListBox.ItemTemplate>
+              <DataTemplate>
+                <StackPanel>
+                  <Border Background="{Binding Color, Converter={StaticResource ColorConverter}}"
+                          Width="16" Height="16"/>
+                </StackPanel>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+            <ListBox.ItemContainerStyle>
+              <Style TargetType="ListBoxItem">
+                <Setter Property="Padding" Value="1"/>
+                <Setter Property="Margin" Value="1"/>
+                <Setter Property="BorderThickness" Value="1"/>
+              </Style>
+            </ListBox.ItemContainerStyle>
+            <ListBox.ItemsPanel>
+              <ItemsPanelTemplate>
+                <StackPanel Orientation="Horizontal"/>
+              </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+          </ListBox>
+        </StackPanel>
+        <StackPanel Name="StackPanel2" Orientation="Horizontal">
+          <TextBlock Text="palette2"/>
+          <Button Content="reduce"/>
+        </StackPanel>
+      </StackPanel>
+      </ScrollViewer>
+    </StackPanel>
 
     <ScrollViewer Name="MyScroll1" Grid.Column="0" Grid.Row="2" 
                   VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-      <Canvas Name="MyCanvas1" HorizontalAlignment="Right">
+      <Canvas Name="MyCanvas1" HorizontalAlignment="Right" UseLayoutRounding="True">
         <Image Name="MyImage1" Stretch="None"/>
       </Canvas>
     </ScrollViewer>
 
     <ScrollViewer Name="MyScroll2" Grid.Column="1" Grid.Row="2" 
                   VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-      <Canvas Name="MyCanvas2" HorizontalAlignment="Left">
+      <Canvas Name="MyCanvas2" HorizontalAlignment="Left" UseLayoutRounding="True">
         <Image Name="MyImage2" Stretch="None"/>
       </Canvas>
     </ScrollViewer>
@@ -85,7 +123,7 @@
       <StatusBarItem>
         <ProgressBar Width="100" Height="15" Value="50"/>
       </StatusBarItem>
-      <StatusBarItem Content=""/>
+      <StatusBarItem Content="{Binding ElementName=MyScroll1, Path=VerticalOffset}"/>
 
 
       <StatusBarItem DockPanel.Dock="Right">

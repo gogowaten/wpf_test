@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Collections.ObjectModel;
+using System.Globalization;
 
 namespace _20190307_レイアウト
 {
@@ -35,25 +37,23 @@ namespace _20190307_レイアウト
             ButtonViewParallel.Click += ButtonViewParallel_Click;
             ButtonZOrder.Click += ButtonZOrder_Click;
 
-            MyScroll1.SizeChanged += MyScroll1_SizeChanged;
+            MyCheckBoxVisibleThumbImage.Click += MyCheckBoxVisibleThumbImage_Click;
         }
 
-        private void MyScroll1_SizeChanged(object sender, SizeChangedEventArgs e)
+        private void MyCheckBoxVisibleThumbImage_Click(object sender, RoutedEventArgs e)
         {
-
-            double x = MyImageThumbnail.ActualWidth / MyScroll1.ExtentWidth;
-            double y = MyImageThumbnail.ActualHeight / MyScroll1.ExtentHeight;
-            double left = MyScroll1.HorizontalOffset * x;
-            double top = MyScroll1.VerticalOffset * y;
-            double width = MyScroll1.ViewportWidth * x;
-            double height = MyScroll1.ViewportHeight * y;
-            if (height > MyImageThumbnail.ActualHeight) { height = MyImageThumbnail.ActualHeight; }
-            Canvas.SetTop(ThumbViewport, top);
-            ThumbViewport.Height = height;
-            if (width > MyImageThumbnail.ActualWidth) { width = MyImageThumbnail.ActualWidth; }
-            Canvas.SetLeft(ThumbViewport, left);
-            ThumbViewport.Width = width;
+            if (MyCheckBoxVisibleThumbImage.IsChecked == true)
+            {
+                MyRowDifinitionThumbImage.Height = new GridLength(200);
+            }
+            else
+            {
+                MyRowDifinitionThumbImage.Height = new GridLength(0);
+            }
         }
+
+
+
 
         //初期処理
         private void MyInitialize()
@@ -87,6 +87,36 @@ namespace _20190307_レイアウト
             MyScale = new ScaleTransform();
             MyImage1.RenderTransform = MyScale;
             MyImage2.RenderTransform = MyScale;
+
+            //Make pallete
+            var listB = new ListBox();
+            var rand = new Random();
+            var rgb = new byte[3];
+            var myData = new ObservableCollection<MyData>();
+
+            for (int i = 0; i < 24; i++)
+            {
+                rand.NextBytes(rgb);
+                var col = Color.FromRgb(rgb[0], rgb[1], rgb[2]);
+                myData.Add(new MyData() { Color = col });
+                var bor = new Border()
+                {
+                    Width = 16,
+                    Height = 16,
+                    Margin = new Thickness(1),
+                    BorderBrush = new SolidColorBrush(Colors.AliceBlue),
+                    BorderThickness = new Thickness(1),
+                    Background = new SolidColorBrush(col)
+                };
+                StackPanel2.Children.Add(bor);                
+            }
+            MyListBoxPalette1.DataContext = myData;
+            //var datatemp = new DataTemplate();
+            //var f = new FrameworkElementFactory(typeof(StackPanel), "DataTemplate");
+            //var fBorder = new FrameworkElementFactory(typeof(Border),"DataTempBorder");
+            //f.AppendChild(fBorder);
+            //datatemp.VisualTree = f;
+            //MyListBoxPalette1.ItemTemplate = datatemp;
         }
 
 
@@ -219,13 +249,14 @@ namespace _20190307_レイアウト
         //ThumbViewportの位置とサイズを変更
         private void MyScroll2_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
+
             //値が双方で異なるときだけ更新
-            if (e.VerticalOffset != MyScroll1.VerticalOffset|e.ExtentHeightChange!=0)
+            if (e.VerticalOffset != MyScroll1.VerticalOffset | e.ExtentHeightChange != 0 | e.ViewportHeightChange != 0)
             {
                 MyScroll1.ScrollToVerticalOffset(e.VerticalOffset);
                 SetThumbViewportVertical(e);
             }
-            if (e.HorizontalOffset != MyScroll1.HorizontalOffset|e.ExtentWidthChange!=0)
+            if (e.HorizontalOffset != MyScroll1.HorizontalOffset | e.ExtentWidthChange != 0 | e.ViewportWidthChange != 0)
             {
                 MyScroll1.ScrollToHorizontalOffset(e.HorizontalOffset);
                 SetThumbViewportHorizontal(e);
@@ -234,12 +265,12 @@ namespace _20190307_レイアウト
 
         private void MyScroll1_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
-            if (e.VerticalOffset != MyScroll2.VerticalOffset | e.ExtentHeightChange!=0)
+            if (e.VerticalOffset != MyScroll2.VerticalOffset | e.ExtentHeightChange != 0 | e.ViewportHeightChange != 0)
             {
                 MyScroll2.ScrollToVerticalOffset(e.VerticalOffset);
                 SetThumbViewportVertical(e);
             }
-            if (e.HorizontalOffset != MyScroll2.HorizontalOffset|e.ExtentWidthChange!=0)
+            if (e.HorizontalOffset != MyScroll2.HorizontalOffset | e.ExtentWidthChange != 0 | e.ViewportWidthChange != 0)
             {
                 MyScroll2.ScrollToHorizontalOffset(e.HorizontalOffset);
                 SetThumbViewportHorizontal(e);
@@ -286,7 +317,7 @@ namespace _20190307_レイアウト
             MyCanvas2.Height = bounds.Height;
             MyCanvas2.Width = bounds.Width;
 
-           
+
         }
 
 
@@ -321,6 +352,25 @@ namespace _20190307_レイアウト
             Grid.SetColumnSpan(MyScroll2, 2);
             MyCanvas1.HorizontalAlignment = HorizontalAlignment.Center;
             MyCanvas2.HorizontalAlignment = HorizontalAlignment.Center;
+        }
+    }
+
+    public class MyData
+    {
+        public Color Color { get; set; }
+    }
+
+    public class MyConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            Color c = (Color)value;
+            return new SolidColorBrush(c);
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
         }
     }
 }
