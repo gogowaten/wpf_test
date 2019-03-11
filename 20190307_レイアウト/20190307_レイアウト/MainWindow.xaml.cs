@@ -21,8 +21,7 @@ namespace _20190307_レイアウト
     /// MainWindow.xaml の相互作用ロジック
     /// </summary>
     public partial class MainWindow : Window
-    {
-        ScaleTransform MyScale;
+    {   
         Point MyPoint;
 
         public MainWindow()
@@ -83,10 +82,7 @@ namespace _20190307_レイアウト
             MyImage1.MouseLeftButtonUp += MyImage_MouseLeftButtonUp;
 
             ThumbViewport.DragDelta += ThumbViewport_DragDelta;
-            //拡大倍率用
-            MyScale = new ScaleTransform();
-            MyImage1.RenderTransform = MyScale;
-            MyImage2.RenderTransform = MyScale;
+           
 
             //Make pallete
             var listB = new ListBox();
@@ -175,8 +171,8 @@ namespace _20190307_レイアウト
             double xd = MyPoint.X - mousePoint.X;
             double yd = MyPoint.Y - mousePoint.Y;
             //拡大表示のときはそのぶん大きくスクロールさせる
-            xd *= MyScale.ScaleX;
-            yd *= MyScale.ScaleY;
+            xd *= SliderScale.Value;
+            yd *= SliderScale.Value;
             //移動距離＋今のスクロール位置
             xd += scrollViewer.HorizontalOffset;
             yd += scrollViewer.VerticalOffset;
@@ -301,23 +297,16 @@ namespace _20190307_レイアウト
         //拡大倍率変更時はImageを乗せているCanvasのサイズを変更する
         private void SliderScale_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            //ScaleTransformの拡大倍率変更
-            MyScale.ScaleX = e.NewValue;
-            MyScale.ScaleY = e.NewValue;
-            //拡大後Imageのサイズを取得
-            var bounds = MyScale.TransformBounds(new Rect(MyImage1.RenderSize));
-
             //Imageが乗っかっているCanvasのサイズを変更すると
             //正しく表示され、スクロールバーも期待通りになる
-            MyCanvas1.Height = bounds.Height;
-            MyCanvas1.Width = bounds.Width;
-
-            //Image2も同様
-            bounds = MyScale.TransformBounds(new Rect(MyImage2.RenderSize));
-            MyCanvas2.Height = bounds.Height;
-            MyCanvas2.Width = bounds.Width;
-
-
+            //拡大後Imageのサイズを取得
+            double widht = MyImage1.ActualWidth * SliderScale.Value;
+            double height = MyImage1.ActualHeight * SliderScale.Value;
+            //設定
+            MyCanvas1.Width = widht;
+            MyCanvas1.Height = height;
+            MyCanvas2.Width = widht;
+            MyCanvas2.Height = height;
         }
 
 
@@ -360,17 +349,17 @@ namespace _20190307_レイアウト
         public Color Color { get; set; }
     }
 
-    public class MyConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            Color c = (Color)value;
-            return new SolidColorBrush(c);
-        }
+    //public class MyConverter : IValueConverter
+    //{
+    //    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    //    {
+    //        Color c = (Color)value;
+    //        return new SolidColorBrush(c);
+    //    }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
-    }
+    //    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    //    {
+    //        throw new NotImplementedException();
+    //    }
+    //}
 }

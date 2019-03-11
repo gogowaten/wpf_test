@@ -94,14 +94,24 @@
     <ScrollViewer Name="MyScroll1" Grid.Column="0" Grid.Row="2" 
                   VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
       <Canvas Name="MyCanvas1" HorizontalAlignment="Right" UseLayoutRounding="True">
-        <Image Name="MyImage1" Stretch="None"/>
+        <Image Name="MyImage1" Stretch="None">
+          <Image.RenderTransform>
+            <ScaleTransform ScaleX="{Binding ElementName=SliderScale, Path=Value}"
+                            ScaleY="{Binding ElementName=SliderScale, Path=Value}"/>
+          </Image.RenderTransform>
+        </Image>
       </Canvas>
     </ScrollViewer>
 
     <ScrollViewer Name="MyScroll2" Grid.Column="1" Grid.Row="2" 
                   VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
       <Canvas Name="MyCanvas2" HorizontalAlignment="Left" UseLayoutRounding="True">
-        <Image Name="MyImage2" Stretch="None"/>
+        <Image Name="MyImage2" Stretch="None">
+          <Image.RenderTransform>
+            <ScaleTransform ScaleX="{Binding ElementName=SliderScale, Path=Value}"
+                            ScaleY="{Binding ElementName=SliderScale, Path=Value}"/>
+          </Image.RenderTransform>
+        </Image>
       </Canvas>
     </ScrollViewer>
 
