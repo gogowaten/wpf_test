@@ -12,17 +12,17 @@
       <ColumnDefinition/>
     </Grid.ColumnDefinitions>
 
-    <Canvas Width="{Binding ElementName=SmallImage, Path=ActualWidth}"
-            Height="{Binding ElementName=SmallImage,Path=ActualHeight}"
+    <Canvas Width="{Binding ElementName=MyImageThumb, Path=ActualWidth}"
+            Height="{Binding ElementName=MyImageThumb,Path=ActualHeight}"
             Margin="10" UseLayoutRounding="True">
-      <Image Name="SmallImage" Width="100" Stretch="Uniform"/>
+      <Image Name="MyImageThumb" Width="100" Stretch="Uniform"/>
       <Path Name="MyPath" Fill="White" Opacity="0.5">
         <Path.Data>
           <CombinedGeometry x:Name="MyCombinedGeometry" GeometryCombineMode="Xor"/>
         </Path.Data>
       </Path>
       
-      <Thumb Name="ThumbViewport" Canvas.Left="0" Canvas.Top="0"><!--leftとtopの指定が必要-->
+      <Thumb Name="MyThumbViewport" Canvas.Left="0" Canvas.Top="0"><!--leftとtopの指定が必要-->
         <Thumb.Template>
           <ControlTemplate TargetType="Thumb">
             <Border BorderBrush="Red" BorderThickness="1" Background="Transparent"/>
@@ -32,7 +32,7 @@
     </Canvas>
 
     <ScrollViewer Name="MyScrollViewer" Grid.Column="1" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible">
-      <Image Name="LargeImage" Stretch="None"/>
+      <Image Name="MyImageMain" Stretch="None"/>
     </ScrollViewer>
   </Grid>
 </Window>
